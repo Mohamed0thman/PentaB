@@ -1,13 +1,42 @@
+// commands
+// [f,b,l,r]
+
+/*
+[y]                     N
+  5                   W + E
+  4                     S
+  3     
+  2   
+  1 
+[x] 1 2 3 4 5
+*/
+
 //Commands
-const forward = "f";
-const backward = "b";
-const left = "l";
-const right = "r";
+export enum Commands {
+  Forward = "f",
+  Backward = "b",
+  Left = "l",
+  Right = "r",
+}
+
 //Compass directions
-const north = "N";
-const east = "E";
-const south = "S";
-const west = "W";
+export enum Directions {
+  North = "N",
+  East = "E",
+  South = "S",
+  West = "W",
+}
+//  status
+export enum Status {
+  MOVING = "MOVING",
+  STOPPED = "STOPPED",
+}
+
+export const obstacles = [
+  [1, 4],
+  [3, 5],
+  [5, 4],
+];
 
 function rover(
   startingPoint: { x: number; y: number },
@@ -15,18 +44,23 @@ function rover(
   commands: string[]
 ) {
   let currentPosition = startingPoint;
+  let status = Status.MOVING;
 
   commands.forEach((command) => {
-    if (command === forward || command === backward) {
+    if (command === Commands.Forward || command === Commands.Backward) {
       const updatedPosition = move(currentPosition, direction, command);
       currentPosition = updatedPosition.position;
       direction = updatedPosition.direction;
-    } else if (command === right || command === left) {
+
+      status = updatedPosition.status || Status.MOVING;
+
+      console.log("updatedPosition.status", updatedPosition.status);
+    } else if (command === Commands.Right || command === Commands.Left) {
       direction = turn(direction, command);
     }
   });
 
-  return { finalPosition: currentPosition, direction };
+  return { finalPosition: currentPosition, direction, status };
 }
 
 function move(
@@ -37,22 +71,26 @@ function move(
   const newPosition = currentPosition;
   let direction = 1;
 
-  if (command === backward) {
+  if (command === Commands.Backward) {
     direction = -1;
   }
 
-  if (currentDirection === north) {
+  if (currentDirection === Directions.North) {
     newPosition.y += 1 * direction;
-  } else if (currentDirection === east) {
+  } else if (currentDirection === Directions.East) {
     newPosition.x += 1 * direction;
-  } else if (currentDirection === south) {
+  } else if (currentDirection === Directions.South) {
     newPosition.y -= 1 * direction;
-  } else if (currentDirection === west) {
+  } else if (currentDirection === Directions.West) {
     newPosition.x -= 1 * direction;
   }
 
   const position = wrapEdges(newPosition, currentDirection);
-  return { ...position };
+
+  const status = obstacleChecker(position.position);
+  console.log("status", status);
+
+  return { ...position, status };
 }
 
 function wrapEdges(position: { x: number; y: number }, direction: string) {
@@ -86,7 +124,8 @@ function wrapEdges(position: { x: number; y: number }, direction: string) {
 }
 
 function turn(currentDirection: string, command: string) {
-  const directions = [north, east, south, west];
+  const directions = Object.values(Directions);
+
   const minIndex = 0;
   const maxIndex = directions.length - 1;
 
@@ -94,9 +133,9 @@ function turn(currentDirection: string, command: string) {
     (direction) => direction === currentDirection
   );
 
-  if (command === right) {
+  if (command === Commands.Right) {
     index++;
-  } else if (command === left) {
+  } else if (command === Commands.Left) {
     index--;
   }
 
@@ -109,16 +148,21 @@ function turn(currentDirection: string, command: string) {
   return directions[index];
 }
 
-export default rover;
-// commands
-// [f,b,l,r]
+//  obstacles checker
 
-/*
-[y]                     N
-  5                   W + E
-  4                     S
-  3     
-  2   
-  1 
-[x] 1 2 3 4 5
-*/
+function obstacleChecker(position: { x: number; y: number }) {
+  const convertPosToString = `${position.x},${position.y}`;
+  let status;
+
+  obstacles.forEach((obstacle) => {
+    if (convertPosToString === obstacle.toString()) {
+      status = Status.STOPPED;
+    }
+  });
+
+  console.log("statusstatusstatusstatusstatus", status);
+
+  return status;
+}
+
+export default rover;
