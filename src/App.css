@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #c53a47;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.planet {
+  position: relative;
+}
+
+.spaceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 0.5rem;
+  height: 30rem;
+  width: 30rem;
+  position: relative;
+}
+
+.spaceGrid div {
+  background-color: #bc2732;
+  border: 1px solid #fff;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.myRobotFriend {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  /* bottom: 0;
+  left: 0; */
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 10;
+  transition: 0.2s;
+}
+.btns {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.button {
+  background-color: #599bb3;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 13px 32px;
+  text-decoration: none;
+  margin: 5px;
+  border: none;
+  outline: none;
+}
+.button:hover {
+  background-color: #408c99;
+}
