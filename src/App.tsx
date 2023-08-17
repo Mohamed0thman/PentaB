@@ -5,6 +5,7 @@ import "./App.css";
 import Ship from "./components/Ship";
 import CustomButton from "./components/CustomButton";
 import { sleep } from "./utilis/utiles";
+import CustomInput from "./components/CustomInput";
 
 function App() {
   const [commands, setCommands] = useState<string[]>([]);
@@ -126,7 +127,9 @@ function App() {
         </div>
 
         <div>
-          <input
+          <h3>you can insert only ["f","b","r","l"]</h3>
+
+          <CustomInput
             type="text"
             onKeyDown={(e) => {
               if (!/([fblr/b])/g.test(e.key) && e.key !== "Backspace") {
@@ -136,6 +139,7 @@ function App() {
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
           />
+          {/* <input /> */}
           <CustomButton text="Go" handleOnClick={handleOnGo} />
         </div>
       </div>
