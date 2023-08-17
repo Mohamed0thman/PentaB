@@ -4,7 +4,7 @@
 
 A React and vanilla JavaScript simulation of  rover on Mars.
 
-## life url
+## live  url
 
 - https://penta-b.vercel.app/
 
